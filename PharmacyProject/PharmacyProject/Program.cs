@@ -81,7 +81,7 @@ namespace PharmacyProject
                             if (!existPharmacy.AddDrug(drug))
                             {
                                 Help.Print("This Drug is exist",ConsoleColor.DarkRed);
-                                Help.Print($"The Count of {drug.Name} increased {drug.Count} count", ConsoleColor.Green);
+                                Help.Print($"The Count of {drug.Name} has increased {drug.Count} count", ConsoleColor.Green);
                                 break;
                             }
                             Help.Print($"{drug.Name}added to {existPharmacy.Name}", ConsoleColor.Green);
@@ -124,10 +124,29 @@ namespace PharmacyProject
 
                             break;
                         #endregion
-                        case Functions.ShowDrugItems:
 
+                        #region ShowDrugItems
+
+                        case Functions.ShowDrugItems:
+                            if (pharmacies.Count==0)
+                            {
+                                Help.Print("Pharmacy doesn't Exist", ConsoleColor.Red);
+                                goto case Functions.CreatePharmacy;
+                            }
+                            foreach (var item in pharmacies)
+                            {
+                                Help.Print(item.ToString(), ConsoleColor.Yellow);
+                                foreach (var item1 in item.ShowDrugItems())
+                                {
+                                    Help.Print(item1.ToString(), ConsoleColor.Cyan);
+                                }
+                            }
                             break;
+                        #endregion
+
+
                         case Functions.SaleDrug:
+
                             break;
                         case Functions.Exit:
                             break;
