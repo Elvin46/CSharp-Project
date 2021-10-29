@@ -12,7 +12,7 @@ namespace PharmacyProject
         public Models.DrugType Type { get; }
         public int Price { get; }
         public int Count { get; set; }
-        public string Info { get; }
+        //public string Info { get; }
         public int Id { get; }
         private static int _counter;
         public Drug()
@@ -20,17 +20,17 @@ namespace PharmacyProject
             _counter++;
             Id = _counter;
         }
-        public Drug(string name ,Models.DrugType type, int price , int count,string info):this()
+        public Drug(string name ,Models.DrugType type, int price , int count):this()
         {
             Name = name;
             Type = type;
             Price = price;
             Count = count;
-            Info = info;
+            //Info = info;
         }
         public override string ToString()
         {
-            return Id + "." + Name +"("+"count:"+ Count +") :"+ Price;
+            return Id + "." + Name +"("+"amount:"+ Count +")-"+ Price + "$";
         }
     }
 }

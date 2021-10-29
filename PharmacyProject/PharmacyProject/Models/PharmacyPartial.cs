@@ -42,22 +42,24 @@ namespace PharmacyProject.Models
             return _drugs;
             
         }
-        public Errors SaleDrug(string name,int count,int cash)
+        public Drug SaleDrug(string name,int count,int cash)
         {
             Drug findDrug = _drugs.Find(x => x.Name.ToLower() == name.ToLower());
-            if (findDrug == null)
-            {
-                return Errors.DoesntExist;
-            }
-            if (findDrug.Count<count)
-            {
-                return Errors.NotEnoughCount;
-            }
-            if (cash<findDrug.Price*count)
-            {
-                return Errors.NotEnoughCash;
-            }
-            return Errors.True;
+            return findDrug;
+            //if (findDrug == null)
+            //{
+            //    return Errors.DoesntExist;
+            //}
+            //if (findDrug.Count<count)
+            //{
+            //    return Errors.NotEnoughCount;
+            //}
+            //if (cash<findDrug.Price*count)
+            //{
+            //    return Errors.NotEnoughCash;
+            //}
+            //findDrug.Count -= count;
+            //return Errors.True;
         }
     }
     enum Errors

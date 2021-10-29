@@ -9,7 +9,7 @@ namespace PharmacyProject.Models
     partial class Pharmacy
     {
         public string Name { get; }
-        private List<Drug> _drugs;
+        public List<Drug> _drugs;
         public int Id { get; }
         private static int _counter;
         public Pharmacy(string name)
