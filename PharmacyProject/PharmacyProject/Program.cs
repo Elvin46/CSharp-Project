@@ -51,11 +51,15 @@ namespace PharmacyProject
                                 Help.Print("Create Pharmacy!", ConsoleColor.Yellow);
                                 goto case Functions.CreatePharmacy;
                             }
-
                             Help.Print("Enter The Name of Drug", ConsoleColor.Yellow);
                             string name = Console.ReadLine();
                             Help.Print("Enter The Type of Drug", ConsoleColor.Yellow);
+                            Help.Print("1.Painkiller\n2.Antibiotics\n3.Antibacterials\n4.Vitamins");
                             string type = Console.ReadLine();
+                            if (type.ToLower().Trim()!= "painkiller" && type.ToLower().Trim() != "antibiotics" && type.ToLower().Trim() != "antibacterials" && type.ToLower().Trim() != "vitamins")
+                            {
+                                Help.Print("Enter The Correct Type", ConsoleColor.DarkRed);
+                            }
                             DrugType drugType = new DrugType(type);
                             Help.Print("Enter The Price of Drug", ConsoleColor.Yellow);
                             int price = Help.Parse();
@@ -114,6 +118,11 @@ namespace PharmacyProject
                                 Help.Print("Choose Correct Pharmacy Name", ConsoleColor.Red);
                                 goto inputPharmacyName2;
                             }
+                            if (existPharmacy.ShowDrugItems()==null)
+                            {
+                                Help.Print("There isn't Drug in Pharmacy", ConsoleColor.DarkRed);
+                                break;
+                            }
                             Help.Print("The List of Drugs");
                             foreach (var item in existPharmacy.ShowDrugItems())
                             {
@@ -128,7 +137,7 @@ namespace PharmacyProject
                             goto inputDrugName;
                             }
                             drug = existPharmacy.InfoDrug(name);
-                            Help.Print($"{drug.Id}.{drug.ToString()}", ConsoleColor.Green);
+                            Help.Print(drug.ToString(), ConsoleColor.Green);
 
                             break;
                         #endregion
@@ -145,9 +154,14 @@ namespace PharmacyProject
                             foreach (var item in pharmacies)
                             {
                                 Help.Typing(item.ToString(), ConsoleColor.Yellow);
+                                if (item.ShowDrugItems() == null)
+                                {
+                                    Help.Print("There isn't Drug in Pharmacy", ConsoleColor.DarkRed);
+                                    continue;
+                                }
                                 foreach (var item1 in item.ShowDrugItems())
                                 {
-                                    Help.Typing(item1.Name, ConsoleColor.Cyan);
+                                    Help.Typing($"{item1.Id}.{item1.Name}", ConsoleColor.Cyan);
                                 }
                             }
                             break;
@@ -162,34 +176,66 @@ namespace PharmacyProject
                                 goto case Functions.CreatePharmacy;
                             }
                             Help.Typing("List of Pharmacies", ConsoleColor.Yellow);
+                            int counter = 0;
                             foreach (var item in pharmacies)
                             {
                                 Help.Print(item.ToString(), ConsoleColor.Green);
+                                if (item.ShowDrugItems() == null)
+                                {
+                                    counter++;
+                                }
                             }
-
+                            if (counter == 0)
+                            {
+                                Help.Print("There isn't drug in any pharmacy", ConsoleColor.DarkRed);
+                                goto case Functions.AddDrug;
+                            }
                             Help.Print("Enter The Name of Pharmacy", ConsoleColor.Yellow);
                         inputPharmacyName3:
                             pharmacyName = Console.ReadLine();
+                            Help.Blink();
                             existPharmacy = pharmacies.Find(x => x.Name.ToLower() == pharmacyName.ToLower());
                             if (existPharmacy == null)
                             {
-                                Help.Print("Choose Correct Pharmacy Name", ConsoleColor.Red);
+                                Help.Print("Choose Correct Pharmacy Name", ConsoleColor.DarkRed);
                                 goto inputPharmacyName3;
                             }
+                            if (existPharmacy.ShowDrugItems() == null)
+                            {
+                                Help.Print("There isn't Drug in Pharmacy", ConsoleColor.DarkRed);
+                                Help.Print("Choose another Pharmacy", ConsoleColor.DarkRed);
+                                foreach (var item in pharmacies)
+                                {
+                                    Help.Print(item.ToString(), ConsoleColor.Green);
+                                }
+                                goto inputPharmacyName3;
+                            }
+                            existPharmacy.ShowDrugItems();
+                            Help.Print("Enter Your Cash", ConsoleColor.Yellow);
+                            int cash = Help.Parse();
                         inputDrugName2:
                             Help.Print("Enter the Name of Drug", ConsoleColor.Yellow);
                             name = Console.ReadLine();
                             inputDrugAmount:
                             Help.Print("Enter the Amount of Drug", ConsoleColor.Yellow);
                             count = Help.Parse();
-                            Help.Print("Enter Your Cash", ConsoleColor.Yellow);
-                            int cash = Help.Parse();
                             Help.Blink();
                             Drug findDrug = existPharmacy.SaleDrug(name, count, cash);
-                            if (findDrug == null)
+                            if (findDrug == null || findDrug.Count == 0)
                             {
                                 Help.Print("This drug doesn't exist", ConsoleColor.DarkRed);
-                                goto inputDrugName2;
+                                Help.Print("Do you want to buy another drug?yes/no", ConsoleColor.Yellow);
+                                string ans = Console.ReadLine();
+                                if (ans.ToLower() == "yes")
+                                {
+                                    existPharmacy.ShowDrugItems();
+                                    goto inputDrugName2;
+                                }
+                                if (ans.ToLower() == "no")
+                                {
+                                    break;
+                                }
+                                Help.Print("Enter The correct answer!!!", ConsoleColor.DarkRed);
                             }
                             if (findDrug.Count < count)
                             {
@@ -202,6 +248,7 @@ namespace PharmacyProject
                                 if (cash < findDrug.Price)
                                 {
                                     Help.Print("You can't buy this drug:(", ConsoleColor.DarkRed);
+                                    break;
                                 }
                                 goto inputDrugAmount;
                             }

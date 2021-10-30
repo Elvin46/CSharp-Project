@@ -55,7 +55,7 @@ namespace PharmacyProject.Helper
                 Console.ForegroundColor = color;
                 if (i==text.Length-1)
                 {
-                    Console.Write(text[i]\n);
+                    Console.Write($"{text[i]}\n");
                     break;
                 }
                 Console.Write(text[i]);

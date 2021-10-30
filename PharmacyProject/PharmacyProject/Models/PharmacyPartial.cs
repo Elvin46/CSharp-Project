@@ -44,23 +44,10 @@ namespace PharmacyProject.Models
         }
         public Drug SaleDrug(string name,int count,int cash)
         {
-            Drug findDrug = _drugs.Find(x => x.Name.ToLower() == name.ToLower());
+            Drug findDrug = _drugs.Find(x => x.Name.ToLower() == name.Trim().ToLower());
             return findDrug;
-            //if (findDrug == null)
-            //{
-            //    return Errors.DoesntExist;
-            //}
-            //if (findDrug.Count<count)
-            //{
-            //    return Errors.NotEnoughCount;
-            //}
-            //if (cash<findDrug.Price*count)
-            //{
-            //    return Errors.NotEnoughCash;
-            //}
-            //findDrug.Count -= count;
-            //return Errors.True;
         }
+
     }
     enum Errors
     {
