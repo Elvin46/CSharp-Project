@@ -72,7 +72,6 @@ namespace PharmacyProject
                             {
                                 Help.Print(item.ToString(), ConsoleColor.Green);
                             }
-
                             Help.Print("Enter The Name of Pharmacy", ConsoleColor.Yellow);
                             pharmacyName = Console.ReadLine();
                             Console.Clear();
@@ -180,7 +179,7 @@ namespace PharmacyProject
                             foreach (var item in pharmacies)
                             {
                                 Help.Print(item.ToString(), ConsoleColor.Green);
-                                if (item.ShowDrugItems() == null)
+                                if (item.ShowDrugItems() != null)
                                 {
                                     counter++;
                                 }
